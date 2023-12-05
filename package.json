@@ -5,6 +5,7 @@
     "serverless-twitter-bot": "bin/serverless-twitter-bot.js"
   },
   "scripts": {
+    "post-tweet": "ts-node src/index.ts",
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",

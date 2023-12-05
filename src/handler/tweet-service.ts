@@ -24,7 +24,7 @@ async function generateTweet(): Promise<string | null> {
       { role: 'user', content: prompts[Math.round(Math.random() * prompts.length - 1)] },
     ],
     model: 'gpt-3.5-turbo-1106',
-    response_format: { type: 'json_object' },
+    max_tokens: 280,
   });
   return completion.choices[0].message.content;
 }

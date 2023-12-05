@@ -3,26 +3,51 @@ import { Construct } from 'constructs';
 import { ScheduledLambda } from '../components/scheduled-lambda';
 import path = require('path');
 import { Schedule } from 'aws-cdk-lib/aws-events';
+import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 
 export class ServerlessTwitterBotStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    const { consumerKey, consumerKeySecret, accessKey, accessKeySecret, openaiApiKey } =
+      this.resolveParams();
     new ScheduledLambda(this, 'ScheduledLambda', {
       lambdaProps: {
-        handler: path.join(__dirname, '../handler/schedule-handler.ts'),
+        entry: path.join(__dirname, '..', '..', 'handler', 'schedule-handler.ts'),
+        handler: 'scheduleHandler',
         description: 'scheduled tweet bot',
         environment: {
-          CONSUMER_KEY: process.env.CONSUMER_KEY as string,
-          CONSUMER_KEY_SECRET: process.env.CONSUMER_KEY_SECRET as string,
-          ACCESS_KEY: process.env.ACCESS_KEY as string,
-          ACCESS_KEY_SECRET: process.env.ACCESS_KEY_SECRET as string,
-          OPENAI_API_KEY: process.env.OPENAI_API_KEY as string,
-        }
+          CONSUMER_KEY: consumerKey,
+          CONSUMER_KEY_SECRET: consumerKeySecret,
+          ACCESS_KEY: accessKey,
+          ACCESS_KEY_SECRET: accessKeySecret,
+          OPENAI_API_KEY: openaiApiKey,
+        },
       },
       ruleProps: {
         schedule: Schedule.rate(cdk.Duration.hours(4)),
       },
     });
+  }
+  private resolveParams(): {
+    consumerKey: any;
+    consumerKeySecret: any;
+    accessKey: any;
+    accessKeySecret: any;
+    openaiApiKey: any;
+  } {
+    return {
+      consumerKey: StringParameter.valueFromLookup(this, '/twitter-bot/twitter-client/client-id'),
+      consumerKeySecret: StringParameter.valueFromLookup(
+        this,
+        '/twitter-bot/twitter-client/client-secret'
+      ),
+      accessKey: StringParameter.valueFromLookup(this, '/twitter-bot/twitter-client/access-key'),
+      accessKeySecret: StringParameter.valueFromLookup(
+        this,
+        '/twitter-bot/twitter-client/access-key-secret'
+      ),
+      openaiApiKey: StringParameter.valueFromLookup(this, '/twitter-bot/openai-api-key'),
+    };
   }
 }

@@ -1,6 +1,7 @@
 import { Duration } from 'aws-cdk-lib';
 import { Rule, RuleProps, Schedule } from 'aws-cdk-lib/aws-events';
 import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction, NodejsFunctionProps } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
@@ -33,6 +34,13 @@ export class ScheduledLambda extends Construct {
     const lambda = new NodejsFunction(this, 'ScheduledLambda', {
       ...lambdaDefaults,
       ...lambdaProps,
+      initialPolicy: [
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          actions: ['ssm:GetParameter'],
+          resources: ['*'],
+        }),
+      ],
     });
     return lambda;
   }

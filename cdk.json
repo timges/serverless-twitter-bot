@@ -1,5 +1,5 @@
 {
-  "app": "npx ts-node --prefer-ts-exts bin/serverless-twitter-bot.ts",
+  "app": "npx ts-node --prefer-ts-exts src/bin/serverless-twitter-bot.ts",
   "watch": {
     "include": [
       "**"
