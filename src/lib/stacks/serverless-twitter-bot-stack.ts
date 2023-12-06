@@ -25,7 +25,13 @@ export class ServerlessTwitterBotStack extends cdk.Stack {
         },
       },
       ruleProps: {
-        schedule: Schedule.rate(cdk.Duration.hours(4)),
+        schedule: Schedule.cron({
+          minute: '0',
+          hour: '9-18',
+          day: '?',
+          month: '*',
+          year: '*',
+        }),
       },
     });
   }
@@ -37,10 +43,13 @@ export class ServerlessTwitterBotStack extends cdk.Stack {
     openaiApiKey: any;
   } {
     return {
-      consumerKey: StringParameter.valueFromLookup(this, '/twitter-bot/twitter-client/client-id'),
+      consumerKey: StringParameter.valueFromLookup(
+        this,
+        '/twitter-bot/twitter-client/consumer-key'
+      ),
       consumerKeySecret: StringParameter.valueFromLookup(
         this,
-        '/twitter-bot/twitter-client/client-secret'
+        '/twitter-bot/twitter-client/consumer-key-secret'
       ),
       accessKey: StringParameter.valueFromLookup(this, '/twitter-bot/twitter-client/access-key'),
       accessKeySecret: StringParameter.valueFromLookup(
