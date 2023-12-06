@@ -46,7 +46,7 @@ export async function generateTweet(): Promise<string | undefined> {
         role: 'user',
         content: `${
           prompts[Math.round(Math.random() * prompts.length - 1)]
-        }. Try to engage the community, if it makes sense.`,
+        }. Try to engage the community, if it makes sense to do so.`,
       },
     ],
     'gpt-4-1106-preview',
