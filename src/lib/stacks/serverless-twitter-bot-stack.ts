@@ -25,13 +25,7 @@ export class ServerlessTwitterBotStack extends cdk.Stack {
         },
       },
       ruleProps: {
-        schedule: Schedule.cron({
-          minute: '0',
-          hour: '9-18',
-          day: '?',
-          month: '*',
-          year: '*',
-        }),
+        schedule: Schedule.expression('cron(0 9-18 * * ? *)'),
       },
     });
   }
@@ -43,20 +37,21 @@ export class ServerlessTwitterBotStack extends cdk.Stack {
     openaiApiKey: any;
   } {
     return {
-      consumerKey: StringParameter.valueFromLookup(
-        this,
-        '/twitter-bot/twitter-client/consumer-key'
-      ),
-      consumerKeySecret: StringParameter.valueFromLookup(
-        this,
-        '/twitter-bot/twitter-client/consumer-key-secret'
-      ),
-      accessKey: StringParameter.valueFromLookup(this, '/twitter-bot/twitter-client/access-key'),
-      accessKeySecret: StringParameter.valueFromLookup(
-        this,
-        '/twitter-bot/twitter-client/access-key-secret'
-      ),
-      openaiApiKey: StringParameter.valueFromLookup(this, '/twitter-bot/openai-api-key'),
+      consumerKey: StringParameter.fromStringParameterAttributes(this, 'ConsumerKey', {
+        parameterName: '/twitter-bot/twitter-client/consumer-key',
+      }).stringValue,
+      consumerKeySecret: StringParameter.fromStringParameterAttributes(this, 'ConsumerKeySecret', {
+        parameterName: '/twitter-bot/twitter-client/consumer-key-secret',
+      }).stringValue,
+      accessKey: StringParameter.fromStringParameterAttributes(this, 'AccessKey', {
+        parameterName: '/twitter-bot/twitter-client/access-key',
+      }).stringValue,
+      accessKeySecret: StringParameter.fromStringParameterAttributes(this, 'AccessKeySecret', {
+        parameterName: '/twitter-bot/twitter-client/access-key-secret',
+      }).stringValue,
+      openaiApiKey: StringParameter.fromStringParameterAttributes(this, 'OpenAiApiKey', {
+        parameterName: '/twitter-bot/openai-api-key',
+      }).stringValue,
     };
   }
 }

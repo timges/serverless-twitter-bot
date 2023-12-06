@@ -12,7 +12,7 @@ type ScheduledLambdaProps = {
 };
 
 const lambdaDefaults: NodejsFunctionProps = {
-  timeout: Duration.seconds(5),
+  timeout: Duration.seconds(90),
   memorySize: 128,
   bundling: {
     minify: true,
@@ -34,13 +34,6 @@ export class ScheduledLambda extends Construct {
     const lambda = new NodejsFunction(this, 'ScheduledLambda', {
       ...lambdaDefaults,
       ...lambdaProps,
-      initialPolicy: [
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          actions: ['ssm:GetParameter'],
-          resources: ['*'],
-        }),
-      ],
     });
     return lambda;
   }
