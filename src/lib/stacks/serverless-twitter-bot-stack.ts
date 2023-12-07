@@ -25,7 +25,7 @@ export class ServerlessTwitterBotStack extends cdk.Stack {
         },
       },
       ruleProps: {
-        schedule: Schedule.expression('cron(0 9-18 * * ? *)'),
+        schedule: Schedule.expression('cron(0 8-17 * * ? *)'),
       },
     });
   }
