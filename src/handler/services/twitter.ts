@@ -46,7 +46,7 @@ export async function generateTweet(): Promise<string | undefined> {
         role: 'user',
         content: `${
           prompts[Math.round(Math.random() * prompts.length - 1)]
-        }. Try to engage the community, if it makes sense to do so.`,
+        }. Try to engage the community, if it makes sense to do so. Do not include code snippets. Keep in mind that the tweet must be less than 280 characters. Phrase it like a private person, not like a company. Dont sound too formal.`,
       },
     ],
     'gpt-4-1106-preview',

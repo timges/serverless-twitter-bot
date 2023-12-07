@@ -28,11 +28,12 @@ export async function generateCodeSnippet(tweet: string): Promise<string | undef
     300
   );
   const codeSnippet = completion.choices[0].message.content;
+  console.log(!!codeSnippet);
   const parsedSnippet = codeSnippet.match(
-    /^```(js|javascript|css|typescript|ts|java|jsx|tsx|bash|sh|zsh)\n([\s\S]*?)```$/
+    /^```(js|javascript|css|typescript|ts|java|jsx|tsx|bash|sh|zsh|svelte|json|yaml|yml)\n([\s\S]*?)```$/
   );
   if (!parsedSnippet?.[1] || !parsedSnippet?.[2]) {
-    console.log(codeSnippet);
+    console.log(!!codeSnippet);
     return undefined;
   }
   const response = await axios.post(
