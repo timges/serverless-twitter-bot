@@ -9,7 +9,7 @@ export async function scheduleHandler() {
   if (tweet.length > 280) {
     throw new Error('Tweet is too long');
   }
-  const codeSnippet = await generateCodeSnippet(tweet as string);
+  const codeSnippet = await generateCodeSnippet(tweet);
   const mediaId = codeSnippet ? await uploadMedia(codeSnippet) : undefined;
   const wasTweetSuccessful = await postTweet(tweet, mediaId);
   if (wasTweetSuccessful) {
